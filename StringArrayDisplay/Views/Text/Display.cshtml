@@ -1,0 +1,24 @@
+﻿@model List<string>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StringsList</title>
+</head>
+<body>
+    @{ 
+        if (Model == null) return;
+
+        foreach (var selectedString in Model)
+        {
+            <h1>@selectedString</h1>
+        }
+    }
+</body>
+</html>
