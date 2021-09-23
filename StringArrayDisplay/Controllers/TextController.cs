@@ -2,6 +2,7 @@
 using StringArrayDisplay.Data;
 using System.Collections.Generic;
 using static StringArrayDisplay.Data.Globals;
+using static StringArrayDisplay.Auxiliary.ListHelper;
 
 namespace StringArrayDisplay.Controllers
 {
@@ -36,13 +37,13 @@ namespace StringArrayDisplay.Controllers
 
             List<string> displayedStrings = null;
 
-            var firstElementID = GetFirstElementID(pageNumber, stringsPerPage);
+            var firstElementID = GetFirstPageElementID(pageNumber, stringsPerPage);
 
-            displayedStrings = TryGetRangeWithOffset(availableStrings, firstElementID, stringsPerPage);
+            displayedStrings = TryGetRangeWithOffset<string>(availableStrings, firstElementID, stringsPerPage);
 
             if(displayedStrings == null)
             {
-                displayedStrings = TryGetDecreasedRangeWithOffset(availableStrings, firstElementID, stringsPerPage);
+                displayedStrings = TryGetDecreasedRangeWithOffset<string>(availableStrings, firstElementID, stringsPerPage);
             }
 
             return displayedStrings;
@@ -52,35 +53,7 @@ namespace StringArrayDisplay.Controllers
 
         #region Auxiliary Actions
 
-        private List<string> TryGetRangeWithOffset(List<string> strings, int firstElementID, int pickAmount)
-        {
-            var rangeMinValue = 0;
-            var rangeMaxValue = strings.Count;
-
-            var firstValueInRange = CheckIfIndexInRange(firstElementID, rangeMinValue, rangeMaxValue);
-            var pickAmountInRange = CheckIfIndexInRange(firstElementID + pickAmount, rangeMinValue, rangeMaxValue);
-
-            if (!firstValueInRange || !pickAmountInRange) return null;
-
-            return strings.GetRange(firstElementID, pickAmount);
-        }
-
-        private List<string> TryGetDecreasedRangeWithOffset(List<string> availableStrings, int firstElementID, int stringsPerPage)
-        {
-            if (availableStrings == null) return null;
-
-            for (int requestedStringsAmount = stringsPerPage; requestedStringsAmount >= 1; requestedStringsAmount--)
-            {
-                var result = TryGetRangeWithOffset(availableStrings, firstElementID, requestedStringsAmount);
-
-                if (result == null) continue;
-                return result;
-            }
-
-            return null;
-        }
-
-        private int GetFirstElementID(int pageNumber, int stringsPerPage)
+        private int GetFirstPageElementID(int pageNumber, int stringsPerPage)
         {
             if (pageNumber == 1)
             {
@@ -88,11 +61,6 @@ namespace StringArrayDisplay.Controllers
             }
 
             return (pageNumber - 1) * stringsPerPage;
-        }
-
-        private bool CheckIfIndexInRange(int id, int rangeMinValue, int rangeMaxValue)
-        {
-            return rangeMinValue <= id && id <= rangeMaxValue;
         }
 
         private bool CheckIfOperationCanBeHandled(int pageNumber, int stringsPerPage)
