@@ -35,9 +35,10 @@ namespace StringArrayDisplay.Controllers
         }
 
         [HttpPost]
-        public void Add(string stringToAdd)
+        public ActionResult Add(string stringToAdd)
         {
             DataBaseMock.TryAddNewString(stringToAdd);
+            return View();
         }
 
         #region Main Actions
