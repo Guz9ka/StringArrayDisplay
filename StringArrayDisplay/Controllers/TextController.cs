@@ -8,6 +8,13 @@ namespace StringArrayDisplay.Controllers
 {
     public class TextController : Controller
     {
+        [HttpGet]
+        public ActionResult Display()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Display(int pageNumber, int stringsPerPage)
         {
             var availableStrings = DataBaseMock.GetAllStringsList();
@@ -21,6 +28,13 @@ namespace StringArrayDisplay.Controllers
             return View(displayedStrings);
         }
 
+        [HttpGet]
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public void Add(string stringToAdd)
         {
             DataBaseMock.TryAddNewString(stringToAdd);

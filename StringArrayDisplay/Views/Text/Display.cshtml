@@ -12,13 +12,15 @@
     <title>StringsList</title>
 </head>
 <body>
-    @{ 
-        if (Model == null) return;
+    <form method="post">
+        @{
+            if (Model == null) return;
 
-        foreach (var selectedString in Model)
-        {
-            <h1>@selectedString</h1>
+            foreach (var selectedString in Model)
+            {
+                <h1>@selectedString</h1>
+            }
         }
-    }
+    <</form>>
 </body>
 </html>
