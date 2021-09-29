@@ -1,4 +1,4 @@
-﻿@model List<string>
+﻿@model StringArrayDisplay.ViewModels.PageInfoViewModel
 
 @{
     Layout = null;
@@ -8,26 +8,30 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <title>StringsList</title>
 </head>
 <body>
-    <form method="post">
-        <input type="number" name="pageNumber" />
-        <input type="number" name="stringsPerPage" />
-        <input type="submit" value="Отобразить страницу" />
+@{
+    if (Model == null)
+    {
+        return;
+    }
 
-        @{
-            if (Model == null)
-            {
-                return;
-            }
-
-            foreach (var selectedString in Model)
-            {
-                <br>@selectedString
-            }
-        }
-    </form>
+    // Display strings
+    foreach (var selectedString in Model.strings)
+    {
+        <br>
+        @selectedString
+    }
+    
+    // Display page numbers
+    <br><br>
+    var pagesCount = (float)Model.availableStringsCount / Model.stringsPerPage;
+    for (int i = 1; i < pagesCount + 1; i++)
+    {
+        <a href="Display?pageNumber=@i&stringsPerPage=@Model.stringsPerPage">@i</a>
+    }
+}
 </body>
 </html>

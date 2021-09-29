@@ -7,29 +7,20 @@ namespace StringArrayDisplay.Auxiliary
 {
     public static class ListHelper
     {
-        public static List<T> TryGetRangeWithOffset<T>(List<T> strings, int firstElementID, int pickAmount)
+        public static List<T> TryGetRangeWithOffsetOrLess<T>(List<T> strings, int firstElementId, int pickAmount)
         {
-            var rangeMinValue = 0;
-            var rangeMaxValue = strings.Count;
-
-            var firstValueInRange = CheckIfIndexInRange(firstElementID, rangeMinValue, rangeMaxValue);
-            var pickAmountInRange = CheckIfIndexInRange(firstElementID + pickAmount, rangeMinValue, rangeMaxValue);
-
-            if (!firstValueInRange || !pickAmountInRange) return null;
-
-            return strings.GetRange(firstElementID, pickAmount);
-        }
-
-        public static List<T> TryGetDecreasedRangeWithOffset<T>(List<T> availableStrings, int firstElementID, int stringsPerPage)
-        {
-            if (availableStrings == null) return null;
-
-            for (int requestedStringsAmount = stringsPerPage; requestedStringsAmount >= 1; requestedStringsAmount--)
+            for (int requestedStringsAmount = pickAmount; requestedStringsAmount > 0; requestedStringsAmount--)
             {
-                var result = TryGetRangeWithOffset(availableStrings, firstElementID, requestedStringsAmount);
+                const int rangeMinValue = 0;
+                var rangeMaxValue = strings.Count;
+                
+                var firstValueInRange = CheckIfIndexInRange(firstElementId, rangeMinValue, rangeMaxValue);
+                var pickAmountInRange = CheckIfIndexInRange(firstElementId + pickAmount, 
+                    rangeMinValue, rangeMaxValue);
 
-                if (result == null) continue;
-                return result;
+                if (!firstValueInRange || !pickAmountInRange) continue;
+
+                return strings.GetRange(firstElementId, pickAmount);
             }
 
             return null;

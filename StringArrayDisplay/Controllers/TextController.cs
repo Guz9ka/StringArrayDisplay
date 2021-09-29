@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StringArrayDisplay.Data;
 using System.Collections.Generic;
+using StringArrayDisplay.ViewModels;
 using static StringArrayDisplay.Data.Globals;
 using static StringArrayDisplay.Auxiliary.ListHelper;
 
@@ -8,24 +9,27 @@ namespace StringArrayDisplay.Controllers
 {
     public class TextController : Controller
     {
-        [HttpGet]
-        public ActionResult Display()
-        {
-            return View();
-        }
+        private const int DefaultPageNumber = 1;
+        private const int DefaultStringsPerPage = 3;
 
-        [HttpPost]
-        public ActionResult Display(int pageNumber, int stringsPerPage)
+        public ActionResult Display(int? pageNumber, int? stringsPerPage)
         {
+            TrySetDefaultValues(ref pageNumber, ref stringsPerPage);
+            var castedStringsPerPage = (int) stringsPerPage;
+            var castedPageNumber = (int) pageNumber;
+            
             var availableStrings = DataBaseMock.GetAllStringsList();
+            var displayedStrings = TryGetRangeWithOffsetOrLess(availableStrings, 
+                GetFirstPageElementID(castedPageNumber, castedStringsPerPage), castedStringsPerPage);
 
-            if (CheckIfOperationCanBeHandled(pageNumber, stringsPerPage))
+            var viewModel = new PageInfoViewModel
             {
-                return null;
-            }
-
-            var displayedStrings = TryGetDisplayedStrings(pageNumber, stringsPerPage, availableStrings);
-            return View(displayedStrings);
+                strings = displayedStrings,
+                availableStringsCount = availableStrings.Count,
+                stringsPerPage = castedStringsPerPage
+            };
+            
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -41,31 +45,6 @@ namespace StringArrayDisplay.Controllers
             return View();
         }
 
-        #region Main Actions
-
-        private List<string> TryGetDisplayedStrings(int pageNumber, int stringsPerPage, List<string> availableStrings)
-        {
-            if (availableStrings == null)
-            {
-                return null;
-            }
-
-            List<string> displayedStrings = null;
-
-            var firstElementID = GetFirstPageElementID(pageNumber, stringsPerPage);
-
-            displayedStrings = TryGetRangeWithOffset<string>(availableStrings, firstElementID, stringsPerPage);
-
-            if(displayedStrings == null)
-            {
-                displayedStrings = TryGetDecreasedRangeWithOffset<string>(availableStrings, firstElementID, stringsPerPage);
-            }
-
-            return displayedStrings;
-        }
-
-        #endregion
-
         #region Auxiliary Actions
 
         private int GetFirstPageElementID(int pageNumber, int stringsPerPage)
@@ -78,9 +57,17 @@ namespace StringArrayDisplay.Controllers
             return (pageNumber - 1) * stringsPerPage;
         }
 
-        private bool CheckIfOperationCanBeHandled(int pageNumber, int stringsPerPage)
+        private void TrySetDefaultValues(ref int? pageNumber, ref int? stringsPerPage)
         {
-            return pageNumber == 0;
+            if (pageNumber == null)
+            {
+                pageNumber = DefaultPageNumber;
+            }
+
+            if (stringsPerPage == null)
+            {
+                stringsPerPage = DefaultStringsPerPage;
+            }
         }
 
         #endregion
