@@ -7,20 +7,20 @@ namespace StringArrayDisplay.Auxiliary
 {
     public static class ListHelper
     {
-        public static List<T> TryGetRangeWithOffsetOrLess<T>(List<T> strings, int firstElementId, int pickAmount)
+        public static List<T> TryGetRangeWithOffsetOrLess<T>(List<T> list, int firstElementId, int desiredPickAmount)
         {
-            for (int requestedStringsAmount = pickAmount; requestedStringsAmount > 0; requestedStringsAmount--)
+            for (int currentPickAmount = desiredPickAmount; currentPickAmount > 0; currentPickAmount--)
             {
                 const int rangeMinValue = 0;
-                var rangeMaxValue = strings.Count;
+                var rangeMaxValue = list.Count;
                 
                 var firstValueInRange = CheckIfIndexInRange(firstElementId, rangeMinValue, rangeMaxValue);
-                var pickAmountInRange = CheckIfIndexInRange(firstElementId + pickAmount, 
+                var pickAmountInRange = CheckIfIndexInRange(firstElementId + desiredPickAmount, 
                     rangeMinValue, rangeMaxValue);
 
                 if (!firstValueInRange || !pickAmountInRange) continue;
 
-                return strings.GetRange(firstElementId, pickAmount);
+                return list.GetRange(firstElementId, desiredPickAmount);
             }
 
             return null;
