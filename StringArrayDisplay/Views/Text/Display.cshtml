@@ -1,17 +1,6 @@
-﻿@model StringArrayDisplay.ViewModels.PageInfoViewModel
+﻿@page
+@model StringArrayDisplay.ViewModels.StringsDisplayInfoViewModel
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width"/>
-    <title>StringsList</title>
-</head>
-<body>
 @{
     if (Model == null)
     {
@@ -19,7 +8,7 @@
     }
 
     // Display strings
-    foreach (var selectedString in Model.strings)
+    foreach (var selectedString in Model.Strings)
     {
         <br>
         @selectedString
@@ -27,11 +16,9 @@
     
     // Display page numbers
     <br><br>
-    var pagesCount = (float)Model.availableStringsCount / Model.stringsPerPage;
+    var pagesCount = (float)Model.AvailableStringsCount / Model.StringsPerPage;
     for (int i = 1; i < pagesCount + 1; i++)
     {
-        <a href="Display?pageNumber=@i&stringsPerPage=@Model.stringsPerPage">@i</a>
+        <a href="Display?pageNumber=@i&stringsPerPage=@Model.StringsPerPage">@i</a>
     }
 }
-</body>
-</html>

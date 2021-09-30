@@ -22,11 +22,11 @@ namespace StringArrayDisplay.Controllers
             var displayedStrings = TryGetRangeWithOffsetOrLess(availableStrings, 
                 GetFirstPageElementID(castedPageNumber, castedStringsPerPage), castedStringsPerPage);
 
-            var viewModel = new PageInfoViewModel
+            var viewModel = new StringsDisplayInfoViewModel
             {
-                strings = displayedStrings,
-                availableStringsCount = availableStrings.Count,
-                stringsPerPage = castedStringsPerPage
+                Strings = displayedStrings,
+                AvailableStringsCount = availableStrings.Count,
+                StringsPerPage = castedStringsPerPage
             };
             
             return View(viewModel);
