@@ -14,7 +14,8 @@ namespace StringArrayDisplay.Data
                 "World", //5
                 "Is", //6
                 "Gonna", //7
-                "Roll Me" //8
+                "Roll", //8
+                "Me", //9
         };
 
         public static List<string> GetAllStringsList()

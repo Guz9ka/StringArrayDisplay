@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace StringArrayDisplay.Auxiliary
 {
@@ -15,12 +12,12 @@ namespace StringArrayDisplay.Auxiliary
                 var rangeMaxValue = list.Count;
                 
                 var firstValueInRange = CheckIfIndexInRange(firstElementId, rangeMinValue, rangeMaxValue);
-                var pickAmountInRange = CheckIfIndexInRange(firstElementId + desiredPickAmount, 
+                var pickAmountInRange = CheckIfIndexInRange(firstElementId + currentPickAmount, 
                     rangeMinValue, rangeMaxValue);
-
+                
                 if (!firstValueInRange || !pickAmountInRange) continue;
 
-                return list.GetRange(firstElementId, desiredPickAmount);
+                return list.GetRange(firstElementId, currentPickAmount);
             }
 
             return null;
