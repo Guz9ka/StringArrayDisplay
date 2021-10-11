@@ -9,10 +9,5 @@ namespace StringArrayDisplay.ViewModels
         
         public int AvailableStringsCount;
         public int StringsPerPage;
-
-        public void OnGet()
-        {
-            
-        }
     }
 }
