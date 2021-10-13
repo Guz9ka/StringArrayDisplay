@@ -12,13 +12,20 @@ namespace StringArrayDisplay.Controllers
         private const int DefaultPageNumber = 1;
         private const int DefaultStringsPerPage = 3;
 
+        private DataBase _dataBase;
+
+        public TextController(DataBase dataBase)
+        {
+            _dataBase = dataBase;
+        }
+        
         public ActionResult Display(int? pageNumber, int? stringsPerPage)
         {
             TrySetDefaultValues(ref pageNumber, ref stringsPerPage);
             var castedStringsPerPage = (int) stringsPerPage;
             var castedPageNumber = (int) pageNumber;
             
-            var availableStrings = DataBaseMock.GetAllStringsList();
+            var availableStrings = _dataBase.GetAllStringsList();
             var displayedStrings = TryGetRangeWithOffsetOrLess(availableStrings, 
                 GetFirstPageElementID(castedPageNumber, castedStringsPerPage), castedStringsPerPage);
 
@@ -41,7 +48,7 @@ namespace StringArrayDisplay.Controllers
         [HttpPost]
         public ActionResult Add(string stringToAdd)
         {
-            DataBaseMock.TryAddNewString(stringToAdd);
+            _dataBase.TryAddNewString(stringToAdd);
             return View();
         }
 

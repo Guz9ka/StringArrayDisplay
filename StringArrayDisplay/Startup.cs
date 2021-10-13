@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StringArrayDisplay.Data;
 
 namespace StringArrayDisplay
 {
@@ -20,6 +21,7 @@ namespace StringArrayDisplay
         {
             services.AddControllersWithViews();
             services.AddMvc();
+            services.AddSingleton<DataBase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
